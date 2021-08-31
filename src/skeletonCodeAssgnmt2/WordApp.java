@@ -94,9 +94,22 @@ public class WordApp {
 		      //[snip]
 		   }
 		});
+
+		JButton quitButton = new JButton("Quit");;
+			
+				// add the listener to the jbutton to handle the "pressed" event
+		quitButton.addActionListener(new ActionListener()
+		{
+		   public void actionPerformed(ActionEvent e)
+		   {
+				System.exit(0);
+		      //[snip]
+		   }
+		});
 		
 		b.add(startB);
 		b.add(endB);
+		b.add(quitButton);
 		
 		g.add(b);
     	
@@ -129,10 +142,10 @@ public class WordApp {
 	public static void main(String[] args) {
     	
 		//deal with command line arguments
-		totalWords=Integer.parseInt(args[0]);  //total words to fall
-		noWords=Integer.parseInt(args[1]); // total words falling at any point
+		totalWords=10;  //total words to fall
+		noWords=6; // total words falling at any point
 		assert(totalWords>=noWords); // this could be done more neatly
-		String[] tmpDict=getDictFromFile(args[2]); //file of words
+		String[] tmpDict=getDictFromFile("example_dict.txt"); //file of words
 		if (tmpDict!=null)
 			dict= new WordDictionary(tmpDict);
 		
