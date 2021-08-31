@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.File;
 
 
 import java.util.Scanner;
@@ -123,7 +124,8 @@ public class WordApp {
    public static String[] getDictFromFile(String filename) {
 		String [] dictStr = null;
 		try {
-			Scanner dictReader = new Scanner(new FileInputStream(filename));
+			// File averageTimeFile = ;
+			Scanner dictReader = new Scanner(new File(filename));
 			int dictLength = dictReader.nextInt();
 			//System.out.println("read '" + dictLength+"'");
 
@@ -145,7 +147,7 @@ public class WordApp {
 		totalWords=10;  //total words to fall
 		noWords=6; // total words falling at any point
 		assert(totalWords>=noWords); // this could be done more neatly
-		String[] tmpDict=getDictFromFile("example_dict.txt"); //file of words
+		String[] tmpDict=getDictFromFile("./src/example_dict.txt"); //file of words
 		if (tmpDict!=null)
 			dict= new WordDictionary(tmpDict);
 		
