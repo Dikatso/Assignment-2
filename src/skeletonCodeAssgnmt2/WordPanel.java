@@ -44,6 +44,27 @@ public class WordPanel extends JPanel implements Runnable {
 		
 		public void run() {
 			//add in code to animate this
+			for (int i=0;i<noWords;i++)
+			{
+				Thread wrt = new Thread(new WordDrop(words, i, noWords, maxY));
+				wrt.start();
+			}
+
+			while(done != true)
+			{
+				try
+				{
+					synchronized(this)
+					{
+					this.wait(100);
+					this.paintAll(this.getGraphics());
+					}
+				}
+				catch (InterruptedException ex)
+				{
+					ex.printStackTrace();
+				}
+			}
 		}
 
 	}

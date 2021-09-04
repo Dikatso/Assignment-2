@@ -25,6 +25,7 @@ public class WordApp {
 
 	static WordDictionary dict = new WordDictionary(); //use default dictionary, to read from file eventually
 
+	static AtomicInteger wordsDropped = new AtomicInteger(0);
 	static WordRecord[] words;
 	static volatile boolean done;  //must be volatile
 	static 	Score score = new Score();
@@ -82,6 +83,9 @@ public class WordApp {
 		   public void actionPerformed(ActionEvent e)
 		   {
 		      //[snip]
+			  Thread ww = new Thread(w);
+                            //stopDropInt.set(totalWords+1);
+                            ww.start();
 		      textEntry.requestFocus();  //return focus to the text entry field
 		   }
 		});
@@ -104,7 +108,6 @@ public class WordApp {
 		   public void actionPerformed(ActionEvent e)
 		   {
 				System.exit(0);
-		      //[snip]
 		   }
 		});
 		
@@ -127,12 +130,12 @@ public class WordApp {
 			// File averageTimeFile = ;
 			Scanner dictReader = new Scanner(new File(filename));
 			int dictLength = dictReader.nextInt();
-			//System.out.println("read '" + dictLength+"'");
+			System.out.println("read '" + dictLength+"'");
 
 			dictStr=new String[dictLength];
 			for (int i=0;i<dictLength;i++) {
 				dictStr[i]=new String(dictReader.next());
-				//System.out.println(i+ " read '" + dictStr[i]+"'"); //for checking
+				System.out.println(i+ " read '" + dictStr[i]+"'"); //for checking
 			}
 			dictReader.close();
 		} catch (IOException e) {
@@ -147,7 +150,7 @@ public class WordApp {
 		totalWords=10;  //total words to fall
 		noWords=6; // total words falling at any point
 		assert(totalWords>=noWords); // this could be done more neatly
-		String[] tmpDict=getDictFromFile("./src/example_dict.txt"); //file of words
+		String[] tmpDict=getDictFromFile("./data/example_dict.txt"); //file of words
 		if (tmpDict!=null)
 			dict= new WordDictionary(tmpDict);
 		
