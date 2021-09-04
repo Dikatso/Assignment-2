@@ -23,15 +23,27 @@ public class WordDrop implements Runnable
     {
         while(WordApp.done != true)
         {
-        
-            if(wordRecord[index].getY() < 480)
+            // Checks if the word has been dropped or all words have been dropped while checking if it hasn't reached the bottom
+            if(wordRecord[index].getY() < 480 || wordRecord[index].dropped() || (WordApp.wordsDropped.get() > 0))
             {
                 wordRecord[index].drop(5);
-                try {
+                try
+                {
                     Thread.sleep(wordRecord[index].getSpeed());
-                } catch (InterruptedException e) {
+                } 
+                catch (Exception e)
+                {
                     e.printStackTrace();
                 }
+
+            }
+
+            if(wordRecord[index].getY() == 480)
+            {
+                wordRecord[index].resetWord();//resets word
+                WordApp.wordsDropped.getAndDecrement();//decrements total words dropped counter
+                WordApp.score.missedWord();
+                System.out.println(WordApp.wordsDropped.get());
 
             }
     }

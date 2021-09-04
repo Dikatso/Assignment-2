@@ -42,7 +42,7 @@ public class WordPanel extends JPanel implements Runnable {
 			this.maxY=maxY;		
 		}
 		
-		public void run() {
+		public synchronized void run() {
 			//add in code to animate this
 			for (int i=0;i<noWords;i++)
 			{
@@ -52,18 +52,7 @@ public class WordPanel extends JPanel implements Runnable {
 
 			while(done != true)
 			{
-				try
-				{
-					synchronized(this)
-					{
-					this.wait(100);
-					this.paintAll(this.getGraphics());
-					}
-				}
-				catch (InterruptedException ex)
-				{
-					ex.printStackTrace();
-				}
+				repaint();
 			}
 		}
 

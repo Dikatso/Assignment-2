@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.File;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 import java.util.Scanner;
@@ -149,6 +151,7 @@ public class WordApp {
 		//deal with command line arguments
 		totalWords=10;  //total words to fall
 		noWords=6; // total words falling at any point
+		wordsDropped.set(noWords + 1);
 		assert(totalWords>=noWords); // this could be done more neatly
 		String[] tmpDict=getDictFromFile("./data/example_dict.txt"); //file of words
 		if (tmpDict!=null)
