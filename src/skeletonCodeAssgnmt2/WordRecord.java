@@ -10,6 +10,7 @@ public class WordRecord {
 	private int fallingSpeed;
 	private static int maxWait=1500;
 	private static int minWait=100;
+	private boolean checkMatched;
 
 	public static WordDictionary dict;
 	
@@ -80,9 +81,25 @@ public class WordRecord {
 		resetPos();
 		text=dict.getNewWord();
 		dropped=false;
+		checkMatched = false;
 		fallingSpeed=(int)(Math.random() * (maxWait-minWait)+minWait); 
 		//System.out.println(getWord() + " falling speed = " + getSpeed());
 
+	}
+
+	public synchronized boolean isMatched()
+	{
+		return checkMatched;
+	}
+
+	public synchronized void matchTrue()
+	{
+		checkMatched = true;
+	}
+
+	public synchronized void matchFalse()
+	{
+		checkMatched = false;
 	}
 	
 	public synchronized boolean matchWord(String typedText) {

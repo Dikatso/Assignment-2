@@ -1,5 +1,7 @@
 package skeletonCodeAssgnmt2;
 
+import javax.swing.JOptionPane;
+
 public class WordDrop implements Runnable
 {
     WordRecord[] wordRecord;
@@ -23,6 +25,7 @@ public class WordDrop implements Runnable
     {
         while(WordApp.done != true)
         {
+            
             // Checks if the word has been dropped or all words have been dropped while checking if it hasn't reached the bottom
             if(wordRecord[index].getY() < 480 || wordRecord[index].dropped() || (WordApp.wordsDropped.get() > 0))
             {
@@ -38,6 +41,15 @@ public class WordDrop implements Runnable
 
             }
 
+            if (wordRecord[index].isMatched())
+            {
+
+                wordRecord[index].resetWord();
+                
+
+
+            }
+
             if(wordRecord[index].getY() == 480)
             {
                 wordRecord[index].resetWord();//resets word
@@ -45,6 +57,13 @@ public class WordDrop implements Runnable
                 WordApp.score.missedWord();
                 System.out.println(WordApp.wordsDropped.get());
 
+            }
+
+            if (WordApp.wordsDropped.get() < 0)
+            {
+                WordApp.done = true;   
+                JOptionPane.showMessageDialog(WordApp.w,"Game Over! \n You Lose :(");
+                
             }
     }
     }

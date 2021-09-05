@@ -31,6 +31,7 @@ public class WordApp {
 	static WordRecord[] words;
 	static volatile boolean done;  //must be volatile
 	static 	Score score = new Score();
+	static String text;
 
 	static WordPanel w;
 	
@@ -63,9 +64,43 @@ public class WordApp {
 	   final JTextField textEntry = new JTextField("",20);
 	   textEntry.addActionListener(new ActionListener()
 	   {
-	      public void actionPerformed(ActionEvent evt) {
-	         String text = textEntry.getText();
+	      public void actionPerformed(ActionEvent evt)
+		  {
+	        String text = textEntry.getText();
+			int tempInt =0;
 	          //[snip]
+
+			// if(!done)
+			// { //check to see if game is actually done, should be triggered from threads though
+			// 	for(int i = 0; i < words.length; i++)
+			// 	{
+			// 		if(words[i].matchWord(text))
+			// 		{
+			// 			words[i].matchTrue();
+			// 			//break;
+			// 		}
+			// 		else
+			// 		{
+			// 			words[i].matchFalse();
+			// 			//break;
+			// 		}
+			// 	}
+			// }
+			
+			while( tempInt < words.length)
+			{
+				if(words[tempInt].matchWord(text))
+				{
+					words[tempInt].matchTrue();
+					tempInt++;  
+				}
+				else
+				{
+					words[tempInt].matchFalse();
+				}
+				tempInt++;
+			}
+
 	         textEntry.setText("");
 	         textEntry.requestFocus();
 	      }
@@ -151,7 +186,7 @@ public class WordApp {
 		//deal with command line arguments
 		totalWords=10;  //total words to fall
 		noWords=6; // total words falling at any point
-		wordsDropped.set(noWords + 1);
+		wordsDropped.set(totalWords);
 		assert(totalWords>=noWords); // this could be done more neatly
 		String[] tmpDict=getDictFromFile("./data/example_dict.txt"); //file of words
 		if (tmpDict!=null)
