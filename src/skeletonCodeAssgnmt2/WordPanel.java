@@ -6,7 +6,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.CountDownLatch;
-
+import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -15,6 +15,10 @@ public class WordPanel extends JPanel implements Runnable {
 		private WordRecord[] words;
 		private int noWords;
 		private int maxY;
+		private JLabel caught;
+		private JLabel missed;
+		private JLabel scr;
+		static Thread wrt;
 
 		
 		public void paintComponent(Graphics g) {
@@ -29,24 +33,31 @@ public class WordPanel extends JPanel implements Runnable {
 		   //draw the words
 		   //animation must be added 
 		    for (int i=0;i<noWords;i++){	    	
-		    	//g.drawString(words[i].getWord(),words[i].getX(),words[i].getY());	
-		    	g.drawString(words[i].getWord(),words[i].getX(),words[i].getY()+20);  //y-offset for skeleton so that you can see the words	
+		    	g.drawString(words[i].getWord(),words[i].getX(),words[i].getY()-10);	
+		    	//g.drawString(words[i].getWord(),words[i].getX(),words[i].getY()+20);  //y-offset for skeleton so that you can see the words	
 		    }
 		   
 		  }
 		
-		WordPanel(WordRecord[] words, int maxY) {
+		WordPanel(WordRecord[] words, int maxY,JLabel caught, JLabel missed,JLabel scr) {
 			this.words=words; //will this work?
 			noWords = words.length;
 			done=false;
 			this.maxY=maxY;		
+			this.caught = caught;
+			this.missed = missed;
+			this.scr = scr;
 		}
 		
+		public static void stopThreads() {
+			wrt.interrupt();
+		}
+
 		public synchronized void run() {
 			//add in code to animate this
 			for (int i=0;i<noWords;i++)
 			{
-				Thread wrt = new Thread(new WordDrop(words, i, noWords, maxY));
+				Thread wrt = new Thread(new WordDrop(words, i, noWords, maxY,caught, missed, scr));
 				wrt.start();
 			}
 
