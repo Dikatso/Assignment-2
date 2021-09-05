@@ -29,6 +29,8 @@ public class WordApp {
 
 	static AtomicInteger wordsDropped = new AtomicInteger(0);
 	static AtomicInteger wordsCaught = new AtomicInteger(0);
+	static int tInt = 0;
+
 	static WordRecord[] words;
 	static volatile boolean done;  //must be volatile
 	static 	Score score = new Score();
@@ -108,10 +110,9 @@ public class WordApp {
 		   public void actionPerformed(ActionEvent e)
 		   {
 		      //[snip]
+			  done = false;
 			  ww = new Thread(w);
 			  ww.start();
-			  WordApp.done = false;
-			  //stopDropInt.set(totalWords+1);
 		      textEntry.requestFocus();  //return focus to the text entry field
 		   }
 		});
@@ -122,15 +123,22 @@ public class WordApp {
 		{
 		   public void actionPerformed(ActionEvent e)
 		   {
-			WordApp.done = true; // stops thread while loop checking
-			//startB.setEnabled(b); // allows start button to be clicked again
-			score.resetScore(); //resets score object
+			done = true; // stops thread while loop checking
+			wordsCaught.set(0);
+			wordsDropped.set(0);
+			score.resetScore();
+
+			System.out.println(wordsCaught.get());
+			System.out.println(wordsDropped.get());
+
+			tInt = 0; //resets score object
 			
-			for(int i = 0; i < words.length; i++)
+			for(int i = 0; i < noWords; i++)
 			{
 				words[i].resetWord(); //resets the words, ready for the next game
 				
 			}
+			WordDrop.update();
 			ww.interrupt();
 		   }
 		});

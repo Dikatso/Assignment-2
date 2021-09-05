@@ -9,9 +9,9 @@ public class WordDrop implements Runnable
     int index;
     int noWords;
     int maxY;
-    private JLabel caught;
-    private JLabel missed;
-    private JLabel scr;
+    static private JLabel caught;
+    static private JLabel missed;
+    static private JLabel scr;
     
 
     public WordDrop(WordRecord[] wrd,int index, int noWords, int maxY,JLabel caught, JLabel missed,JLabel scr)
@@ -28,7 +28,7 @@ public class WordDrop implements Runnable
 
     }
 
-    public void update()
+    public static void update()
     {
         missed.setText("Missed:" +  WordApp.score.getMissed()+ "    ");
         caught.setText("Caught: " + WordApp.score.getCaught() + "    ");
@@ -38,7 +38,7 @@ public class WordDrop implements Runnable
     @Override
     public void run()
     {
-        int tInt = 0;
+        
         // boolean finished = true;
         while(WordApp.done != true)
         {
@@ -65,10 +65,6 @@ public class WordDrop implements Runnable
                 WordApp.score.caughtWord(wordRecord[index].getWord().length());
                 System.out.println("Caught No: " +WordApp.wordsCaught.get());
                 update();
-                
-
-
-
             }
 
             if(wordRecord[index].getY() == 480)
@@ -86,32 +82,36 @@ public class WordDrop implements Runnable
             if (WordApp.wordsDropped.get() < 0)
             {
                 WordApp.done = true;   
-                tInt = 2; 
+                WordApp.tInt = 2; 
                 
             }
 
             if (WordApp.wordsCaught.get() >= WordApp.totalWords )
             {
+                System.out.println(WordApp.totalWords);
+                System.out.println("\ncaught == totalWords\n");
                 WordApp.done = true; 
-                tInt = 1;   
+                WordApp.tInt = 1;   
             }
         }
-        if(tInt == 2 && WordApp.finished )
+
+        if(WordApp.tInt == 2 && WordApp.finished )
         {
             WordApp.finished = false;
             JOptionPane.showMessageDialog(WordApp.w,"Game Over! \n You Lose :(", "Falling Words", JOptionPane.INFORMATION_MESSAGE);
+            WordApp.wordsCaught.set(0);
+			WordApp.wordsDropped.set(0);
+			WordApp.score.resetScore();
         }
 
-        if(tInt == 1 && WordApp.finished)
+        if(WordApp.tInt == 1 && WordApp.finished)
         {
             WordApp.finished = false;
             JOptionPane.showMessageDialog(WordApp.w,"Game Over! \n You Win :)", "Falling Words", JOptionPane.INFORMATION_MESSAGE);
-        }
-        if(WordApp.done)
-        {
-            WordPanel.stopThreads();
-            System.out.println("We out");
-        }
+            WordApp.wordsCaught.set(0);
+			WordApp.wordsDropped.set(0);
+			WordApp.score.resetScore();
+        } 
         
     }
 

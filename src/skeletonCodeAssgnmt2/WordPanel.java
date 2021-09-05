@@ -49,9 +49,9 @@ public class WordPanel extends JPanel implements Runnable {
 			this.scr = scr;
 		}
 		
-		public static void stopThreads() {
-			wrt.interrupt();
-		}
+		// public static void stopThreads() {
+		// 	wrt.interrupt();
+		// }
 
 		public synchronized void run() {
 			//add in code to animate this
@@ -61,7 +61,7 @@ public class WordPanel extends JPanel implements Runnable {
 				wrt.start();
 			}
 
-			while(done != true)
+			while(!WordApp.done)
 			{
 				repaint();
 			}
