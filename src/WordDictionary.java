@@ -1,4 +1,7 @@
-
+/**
+ * @author CSC DEPT UCT
+ * @version 6 Sept 2021
+ */
 
 public class WordDictionary {
 	int size;

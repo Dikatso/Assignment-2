@@ -1,4 +1,8 @@
-
+/**
+ * @author CSC DEPT UCT
+ * @author Dikatso Moshweunyane
+ * @version 6 Sept 2021
+ */
 
 public class WordRecord {
 	private String text;

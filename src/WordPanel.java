@@ -1,4 +1,8 @@
-
+/**
+ * @author CSC DEPT UCT
+ * @author Dikatso Moshweunyane
+ * @version 6 Sept 2021
+ */
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -47,6 +51,9 @@ public class WordPanel extends JPanel implements Runnable {
 			this.scr = scr;
 		}
 		
+		/**
+		 * Creates the different word threads and starts them
+		*/
 		public synchronized void run() {
 			//add in code to animate this
 			for (int i=0;i<noWords;i++)

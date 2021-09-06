@@ -1,7 +1,11 @@
-
+/**
+ * @author Dikatso Moshweunyane
+ * @version 06 Sept 2021
+ */
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+
 
 public class WordDrop implements Runnable
 {
@@ -13,7 +17,16 @@ public class WordDrop implements Runnable
     static private JLabel missed;
     static private JLabel scr;
     
-
+    /**
+     * Class instatntiater responsible for the dropping of words
+     * @param wrd
+     * @param index
+     * @param noWords
+     * @param maxY
+     * @param caught
+     * @param missed
+     * @param scr
+     */
     public WordDrop(WordRecord[] wrd,int index, int noWords, int maxY,JLabel caught, JLabel missed,JLabel scr)
     {
         wordRecord = wrd;
@@ -24,7 +37,9 @@ public class WordDrop implements Runnable
         this.missed = missed;
         this.scr = scr;
     }
-
+    /**
+     * Updates the JLabels on the GUI
+     */
     public static void update()
     {
         missed.setText("Missed:" +  WordApp.score.getMissed()+ "    ");
@@ -32,14 +47,18 @@ public class WordDrop implements Runnable
         scr.setText("Score:" +  WordApp.score.getScore()+ "    ");
     }
 
+
     @Override
+    /**
+     * Responsible for the handling of multiple cases when the words are dropping and the final displayed message when game is finished
+     */
     public void run()
     {
         
-        while(WordApp.done != true)
+        while(WordApp.done != true) // Checks if the game is not done
         {
             
-            if(wordRecord[index].getY() < 480 || wordRecord[index].dropped() || (WordApp.wordsDropped.get() > 0))
+            if(wordRecord[index].getY() < 480 || wordRecord[index].dropped() || (WordApp.wordsDropped.get() > 0))   // Checks if word is still dropping
             {
                 wordRecord[index].drop(15);
                 try
@@ -53,7 +72,7 @@ public class WordDrop implements Runnable
 
             }
 
-            if (wordRecord[index].isMatched())
+            if (wordRecord[index].isMatched())  // // Checks if the entered word is correct/matches with one of the dropping words
             {
                 WordApp.catchSound();
                 WordApp.wordsCaught.getAndIncrement();
@@ -62,7 +81,7 @@ public class WordDrop implements Runnable
                 update();
             }
 
-            if(wordRecord[index].getY() == 480)
+            if(wordRecord[index].getY() == 480) // Checks if a word has reached the red zone/bottom
             {
                 WordApp.missSound();
                 wordRecord[index].resetWord();//resets word
@@ -86,7 +105,7 @@ public class WordDrop implements Runnable
                  WordApp.tInt = 1;   
             }
         }
-        if(WordApp.tInt == 1 && WordApp.finished)
+        if(WordApp.tInt == 1 && WordApp.finished)   // Prints Game Over message when game is over
         {
             WordApp.endGameSounds();
             WordApp.finished = false;

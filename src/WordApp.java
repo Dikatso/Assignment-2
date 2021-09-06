@@ -1,5 +1,7 @@
-
-
+/**
+ * @author Dikatso Moshweunyane
+ * @version 6 September 2021
+ */
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -40,6 +42,11 @@ public class WordApp {
 	static WordPanel w;
 	static Thread ww;
 	
+
+	/**
+	 * Responsible for the end game sound
+	 */
+
 	public static void endGameSounds()
     {
         String soundName = "./data/gameoverFinal1.wav";    
@@ -65,6 +72,10 @@ public class WordApp {
         clip.start();
 
     }
+
+	/**
+	 * Responsible for the missed word sound
+	 */
 	public static void missSound()
     {
         String soundName2 = "./data/wrongL.wav";    
@@ -89,6 +100,11 @@ public class WordApp {
             }
         clip2.start();
     }
+	
+	/**
+	 * Responsible for the caught word sound
+	 */
+
 	public static void catchSound()
     {
         String soundName1 = "./data/correctL.wav";    
@@ -113,6 +129,14 @@ public class WordApp {
             }
         clip1.start();
     }
+
+
+	/**
+	 * Sets up the GUI
+	 * @param frameX
+	 * @param frameY
+	 * @param yLimit
+	 */
 	public static void setupGUI(int frameX,int frameY,int yLimit)
 	{
 		// Frame init and dimensions
@@ -184,7 +208,7 @@ public class WordApp {
 		   {
 		      //[snip]
 			  done = false;
-			  ww = new Thread(w);
+			  ww = new Thread(w);	
 			  ww.start();
 		      textEntry.requestFocus();  //return focus to the text entry field
 		   }
@@ -193,20 +217,20 @@ public class WordApp {
 		endB.setBackground(Color.RED);
 		endB.setForeground(Color.BLACK);
 			
-				// add the listener to the jbutton to handle the "pressed" event
+		// add the listener to the jbutton to handle the "pressed" event
 		endB.addActionListener(new ActionListener()
 		{
 		   public void actionPerformed(ActionEvent e)
 		   {
-			done = true; // stops thread while loop checking
+			done = true; 
 			wordsCaught.set(0);
 			wordsDropped.set(0);
 			score.resetScore();
-			tInt = 0; //resets score object
+			tInt = 0; 
 			
 			for(int i = 0; i < noWords; i++)
 			{
-				words[i].resetWord(); //resets the words, ready for the next game
+				words[i].resetWord(); //resets the words
 				
 			}
 			WordDrop.update();
@@ -240,6 +264,11 @@ public class WordApp {
       	frame.setVisible(true);
 	}
 	
+   /**
+	* Gets the dictionary from file
+	* @param filename
+	* @return
+    */	
    public static String[] getDictFromFile(String filename) {
 		String [] dictStr = null;
 		try {
@@ -259,6 +288,10 @@ public class WordApp {
 		return dictStr;
 	}
 
+	/**
+	 * Main method to run the program
+	 * @param args
+	 */
 	public static void main(String[] args) {
     	
 		//deal with command line arguments
@@ -266,7 +299,6 @@ public class WordApp {
 		noWords=Integer.parseInt(args[1]); // total words falling at any point
 		wordsDropped.set(totalWords);
 		assert(totalWords>=noWords); // this could be done more neatly
-		System.out.println(args[2]);
 		String[] tmpDict=getDictFromFile(args[2]); //file of words
 		// ./data/example_dict.txt
 		if (tmpDict!=null) dict= new WordDictionary(tmpDict);
