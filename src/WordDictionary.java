@@ -1,4 +1,4 @@
-package skeletonCodeAssgnmt2;
+
 
 public class WordDictionary {
 	int size;

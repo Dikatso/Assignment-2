@@ -1,4 +1,4 @@
-package skeletonCodeAssgnmt2;
+
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -34,9 +34,7 @@ public class WordPanel extends JPanel implements Runnable {
 		   //animation must be added 
 		    for (int i=0;i<noWords;i++){	    	
 		    	g.drawString(words[i].getWord(),words[i].getX(),words[i].getY()-10);	
-		    	//g.drawString(words[i].getWord(),words[i].getX(),words[i].getY()+20);  //y-offset for skeleton so that you can see the words	
 		    }
-		   
 		  }
 		
 		WordPanel(WordRecord[] words, int maxY,JLabel caught, JLabel missed,JLabel scr) {
@@ -49,10 +47,6 @@ public class WordPanel extends JPanel implements Runnable {
 			this.scr = scr;
 		}
 		
-		// public static void stopThreads() {
-		// 	wrt.interrupt();
-		// }
-
 		public synchronized void run() {
 			//add in code to animate this
 			for (int i=0;i<noWords;i++)
@@ -62,8 +56,9 @@ public class WordPanel extends JPanel implements Runnable {
 			}
 
 			while(!WordApp.done)
-			{
+			{	synchronized(this){
 				repaint();
+				}
 			}
 		}
 

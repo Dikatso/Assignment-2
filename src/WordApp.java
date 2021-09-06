@@ -1,19 +1,19 @@
-package skeletonCodeAssgnmt2;
+
 
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.File;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-
-
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.util.Scanner;
-import java.util.concurrent.*;
+import java.io.FileInputStream;
 //model is separate from the view.
 
 public class WordApp {
@@ -40,8 +40,79 @@ public class WordApp {
 	static WordPanel w;
 	static Thread ww;
 	
-	
-	
+	public static void endGameSounds()
+    {
+        String soundName = "./data/gameoverFinal1.wav";    
+            AudioInputStream audioInputStream =null;
+            try {
+                audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
+            } catch (UnsupportedAudioFileException | IOException e2) {
+                e2.printStackTrace();
+            }
+            Clip clip = null;
+            try {
+                clip = AudioSystem.getClip();
+            } catch (LineUnavailableException e1) {
+                e1.printStackTrace();
+            }
+            try {
+                clip.open(audioInputStream);
+            } catch (LineUnavailableException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        clip.start();
+
+    }
+	public static void missSound()
+    {
+        String soundName2 = "./data/wrongL.wav";    
+            AudioInputStream audioInputStream2 =null;
+            try {
+                audioInputStream2 = AudioSystem.getAudioInputStream(new File(soundName2).getAbsoluteFile());
+            } catch (UnsupportedAudioFileException | IOException e2) {
+                e2.printStackTrace();
+            }
+            Clip clip2 = null;
+            try {
+                clip2 = AudioSystem.getClip();
+            } catch (LineUnavailableException e1) {
+                e1.printStackTrace();
+            }
+            try {
+                clip2.open(audioInputStream2);
+            } catch (LineUnavailableException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        clip2.start();
+    }
+	public static void catchSound()
+    {
+        String soundName1 = "./data/correctL.wav";    
+            AudioInputStream audioInputStream1 =null;
+            try {
+                audioInputStream1 = AudioSystem.getAudioInputStream(new File(soundName1).getAbsoluteFile());
+            } catch (UnsupportedAudioFileException | IOException e2) {
+                e2.printStackTrace();
+            }
+            Clip clip1 = null;
+            try {
+                clip1 = AudioSystem.getClip();
+            } catch (LineUnavailableException e1) {
+                e1.printStackTrace();
+            }
+            try {
+                clip1.open(audioInputStream1);
+            } catch (LineUnavailableException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        clip1.start();
+    }
 	public static void setupGUI(int frameX,int frameY,int yLimit)
 	{
 		// Frame init and dimensions
@@ -103,6 +174,8 @@ public class WordApp {
 	   	JPanel b = new JPanel();
 		b.setLayout(new BoxLayout(b, BoxLayout.LINE_AXIS)); 
 	   	JButton startB = new JButton("Start");;
+		startB.setBackground(Color.RED);
+		startB.setForeground(Color.BLACK);
 		
 			// add the listener to the jbutton to handle the "pressed" event
 		startB.addActionListener(new ActionListener()
@@ -117,6 +190,8 @@ public class WordApp {
 		   }
 		});
 		JButton endB = new JButton("End");;
+		endB.setBackground(Color.RED);
+		endB.setForeground(Color.BLACK);
 			
 				// add the listener to the jbutton to handle the "pressed" event
 		endB.addActionListener(new ActionListener()
@@ -127,10 +202,6 @@ public class WordApp {
 			wordsCaught.set(0);
 			wordsDropped.set(0);
 			score.resetScore();
-
-			System.out.println(wordsCaught.get());
-			System.out.println(wordsDropped.get());
-
 			tInt = 0; //resets score object
 			
 			for(int i = 0; i < noWords; i++)
@@ -144,8 +215,10 @@ public class WordApp {
 		});
 
 		JButton quitButton = new JButton("Quit");;
+		quitButton.setBackground(Color.RED);
+		quitButton.setForeground(Color.BLACK);
 			
-				// add the listener to the jbutton to handle the "pressed" event
+		// add the listener to the jbutton to handle the "pressed" event
 		quitButton.addActionListener(new ActionListener()
 		{
 		   public void actionPerformed(ActionEvent e)
@@ -169,23 +242,18 @@ public class WordApp {
 	
    public static String[] getDictFromFile(String filename) {
 		String [] dictStr = null;
-		try
-		{
-			// File averageTimeFile = ;
-			Scanner dictReader = new Scanner(new File(filename));
+		try {
+			Scanner dictReader = new Scanner(new FileInputStream(filename));
 			int dictLength = dictReader.nextInt();
-			System.out.println("read '" + dictLength+"'");
+			//System.out.println("read '" + dictLength+"'");
 
 			dictStr=new String[dictLength];
-			for (int i=0;i<dictLength;i++)
-			{
+			for (int i=0;i<dictLength;i++) {
 				dictStr[i]=new String(dictReader.next());
-				System.out.println(i+ " read '" + dictStr[i]+"'"); //for checking
+				//System.out.println(i+ " read '" + dictStr[i]+"'"); //for checking
 			}
 			dictReader.close();
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 	        System.err.println("Problem reading file " + filename + " default dictionary will be used");
 	    }
 		return dictStr;
@@ -194,18 +262,17 @@ public class WordApp {
 	public static void main(String[] args) {
     	
 		//deal with command line arguments
-		totalWords=10;  //total words to fall
-		noWords=6; // total words falling at any point
+		totalWords=Integer.parseInt(args[0]);  //total words to fall
+		noWords=Integer.parseInt(args[1]); // total words falling at any point
 		wordsDropped.set(totalWords);
 		assert(totalWords>=noWords); // this could be done more neatly
-		String[] tmpDict=getDictFromFile(""); //file of words
+		System.out.println(args[2]);
+		String[] tmpDict=getDictFromFile(args[2]); //file of words
 		// ./data/example_dict.txt
 		if (tmpDict!=null) dict= new WordDictionary(tmpDict);
 		WordRecord.dict=dict; //set the class dictionary for the words.
 		
 		words = new WordRecord[noWords];  //shared array of current words
-		
-		//[snip]
 		
 		setupGUI(frameX, frameY, yLimit);  
     	//Start WordPanel thread - for redrawing animation
